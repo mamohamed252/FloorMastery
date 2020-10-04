@@ -113,8 +113,6 @@ public class FloorMasteryView {
     public void displayRemoveStudentBanner() {
         io.print("=== Remove Student ===");
     }
-    public void firstLineMessage(){
-        io.print("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,TotalSS");
-    }
+    
 
 }
