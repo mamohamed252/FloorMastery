@@ -7,12 +7,15 @@ package com.mycompany.floormastery.DAO;
 
 import com.mycompany.floormastery.Controller.DTO.OrderFile;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
     private static LocalDate date = LocalDate.now();
     public static String dateString = DateTimeFormatter.ofPattern("MMddyyyy").format(date);
     public static String ORDER_FILE = ("Orders_" + dateString + ".txt");
+   public static File dir = new File( "C:\\Users\\Mohamed\\Desktop\\FloorMasterFiles\\FloorMasteryRepo\\FloorMastery\\Orders", ORDER_FILE);
     public static final String DELIMITER = ",";
     private Map<Integer, OrderFile> ordersMap = new HashMap<>();
 
@@ -127,7 +131,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
     private void writeOrders() throws FloorMasteryDAOException {
         PrintWriter out;
         try {
-            out = new PrintWriter(new FileWriter(ORDER_FILE));
+            out = new PrintWriter(new FileWriter(dir));
         } catch (IOException e) {
             throw new FloorMasteryDAOException(
                     "Could not save order data", e);
