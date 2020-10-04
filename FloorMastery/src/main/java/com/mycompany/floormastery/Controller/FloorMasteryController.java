@@ -63,7 +63,7 @@ public class FloorMasteryController {
         } catch (FloorMasteryDAOException e) {
             System.out.println(e.getMessage());
         }
-
+//
     }
 
     private int getMenuSelection() {
@@ -78,7 +78,6 @@ public class FloorMasteryController {
     }
 
     private void addOrders() throws FloorMasteryDAOException {
-        view.firstLineMessage();
         OrderFile newOrderFile = view.getNewOrderInfo();
         dao.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
 
