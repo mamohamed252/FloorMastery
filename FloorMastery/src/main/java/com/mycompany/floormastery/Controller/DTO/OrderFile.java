@@ -6,8 +6,7 @@
 package com.mycompany.floormastery.Controller.DTO;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  *
@@ -15,14 +14,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class OrderFile {
 
-    private LocalDate now = LocalDate.now();
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
-
-
-    private LocalDate date = LocalDate.parse(now.format(formatter));
-    private String dateinfo = date.toString();
-
-    private Integer orderNumber;
+    private int orderNumber;
     private String customerName;
     private String state;
     private BigDecimal taxRate;
@@ -34,19 +26,13 @@ public class OrderFile {
     private BigDecimal tax;
     private BigDecimal total;
     private BigDecimal LaborCostPerSquareFoot;
+    private String dateinfo;
 
-
-
-    public OrderFile(int orderNumber, String dateInfo) {
-        this.orderNumber = orderNumber;
-        this.dateinfo = dateInfo;
+   public OrderFile() {
     }
+   
     public OrderFile(int orderNumber) {
         this.orderNumber = orderNumber;
-    }
-
-    public String getDateinfo() {
-        return dateinfo;
     }
 
     public OrderFile(int orderNumber, String dateInfo, String customerName, String state, String productType, BigDecimal area) {
@@ -57,6 +43,15 @@ public class OrderFile {
         this.productType = productType;
         this.area = area;
     }
+    
+    public String getDateinfo() {
+        return dateinfo;
+    }
+
+    public void setDateinfo(String dateinfo) {
+        this.dateinfo = dateinfo;
+    }
+
 
     public int getOrderNumber() {
         return orderNumber;
@@ -149,28 +144,83 @@ public class OrderFile {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
-        public LocalDate getNow() {
-        return now;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + this.orderNumber;
+        hash = 83 * hash + Objects.hashCode(this.customerName);
+        hash = 83 * hash + Objects.hashCode(this.state);
+        hash = 83 * hash + Objects.hashCode(this.taxRate);
+        hash = 83 * hash + Objects.hashCode(this.productType);
+        hash = 83 * hash + Objects.hashCode(this.area);
+        hash = 83 * hash + Objects.hashCode(this.costPerSquareFoot);
+        hash = 83 * hash + Objects.hashCode(this.materialCost);
+        hash = 83 * hash + Objects.hashCode(this.laborCost);
+        hash = 83 * hash + Objects.hashCode(this.tax);
+        hash = 83 * hash + Objects.hashCode(this.total);
+        hash = 83 * hash + Objects.hashCode(this.LaborCostPerSquareFoot);
+        hash = 83 * hash + Objects.hashCode(this.dateinfo);
+        return hash;
     }
 
-    public void setNow(LocalDate now) {
-        this.now = now;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OrderFile other = (OrderFile) obj;
+        if (this.orderNumber != other.orderNumber) {
+            return false;
+        }
+        if (!Objects.equals(this.customerName, other.customerName)) {
+            return false;
+        }
+        if (!Objects.equals(this.state, other.state)) {
+            return false;
+        }
+        if (!Objects.equals(this.productType, other.productType)) {
+            return false;
+        }
+        if (!Objects.equals(this.dateinfo, other.dateinfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.taxRate, other.taxRate)) {
+            return false;
+        }
+        if (!Objects.equals(this.area, other.area)) {
+            return false;
+        }
+        if (!Objects.equals(this.costPerSquareFoot, other.costPerSquareFoot)) {
+            return false;
+        }
+        if (!Objects.equals(this.materialCost, other.materialCost)) {
+            return false;
+        }
+        if (!Objects.equals(this.laborCost, other.laborCost)) {
+            return false;
+        }
+        if (!Objects.equals(this.tax, other.tax)) {
+            return false;
+        }
+        if (!Objects.equals(this.total, other.total)) {
+            return false;
+        }
+        if (!Objects.equals(this.LaborCostPerSquareFoot, other.LaborCostPerSquareFoot)) {
+            return false;
+        }
+        return true;
     }
 
-    public DateTimeFormatter getFormatter() {
-        return formatter;
+    @Override
+    public String toString() {
+        return "OrderFile{" + "orderNumber=" + orderNumber + ", customerName=" + customerName + ", state=" + state + ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot=" + costPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + ", LaborCostPerSquareFoot=" + LaborCostPerSquareFoot + ", dateinfo=" + dateinfo + '}';
     }
-
-    public void setFormatter(DateTimeFormatter formatter) {
-        this.formatter = formatter;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
+    
 }

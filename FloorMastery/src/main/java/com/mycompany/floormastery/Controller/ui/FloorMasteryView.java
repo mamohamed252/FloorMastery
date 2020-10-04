@@ -6,8 +6,11 @@
 package com.mycompany.floormastery.Controller.ui;
 
 import com.mycompany.floormastery.Controller.DTO.OrderFile;
+import com.mycompany.floormastery.DAO.FloorMasteryDAO;
+import com.mycompany.floormastery.DAO.FloorMasteryDAOFileImpl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -16,11 +19,13 @@ import java.util.List;
  */
 public class FloorMasteryView {
 
-    private UserIO io;
+   
+
 
     public FloorMasteryView(UserIO io) {
         this.io = io;
     }
+    private UserIO io;
 
     public int printMenuAndGetSelection() {
         io.print("<<Flooring Program>>");
@@ -36,14 +41,17 @@ public class FloorMasteryView {
 
     public OrderFile getNewOrderInfo() {
         String dateInfo = io.readString("Please enter date: MMddyyyy format: ");
-        String orderNumber = io.readString("Please enter order number");
+       // String orderNumber = io.readString("Please enter order number");
         String name = io.readString("Please enter name");
-        String state = io.readString("Please enter state");
+        String state = io.readString("Please enter state abbreviation");
         String productType = io.readString("Please enter product type");
         BigDecimal area = io.readBigDecimal("Please enter area");
-        LocalDate enteredDate = LocalDate.parse(dateInfo);
-        OrderFile currentOrder = new OrderFile(Integer.parseInt(orderNumber));
-        currentOrder.setDate(enteredDate);
+        LocalDate enteredDate = LocalDate.parse(dateInfo, DateTimeFormatter.ofPattern("MMddyyyy"));
+        //add counter for order number or global counter that checks highest number in file
+        
+        OrderFile currentOrder = new OrderFile(1);
+        //currentOrder.setDate(enteredDate);
+        currentOrder.setDateinfo(dateInfo);
         currentOrder.setCustomerName(name);
         currentOrder.setState(state);
         currentOrder.setProductType(productType);
@@ -104,6 +112,9 @@ public class FloorMasteryView {
 
     public void displayRemoveStudentBanner() {
         io.print("=== Remove Student ===");
+    }
+    public void firstLineMessage(){
+        io.print("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,TotalSS");
     }
 
 }

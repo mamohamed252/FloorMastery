@@ -27,23 +27,27 @@ import java.util.Scanner;
  */
 public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
-    private static LocalDate date;
+    private static LocalDate date = LocalDate.now();
     public static String dateString = DateTimeFormatter.ofPattern("MMddyyyy").format(date);
     public static String ORDER_FILE = ("Orders_" + dateString + ".txt");
     public static final String DELIMITER = ",";
     private Map<Integer, OrderFile> ordersMap = new HashMap<>();
 
     @Override
-    public OrderFile addOrder(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException  {
-        loadOrders();
+    public OrderFile addOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
+        try {
+            loadOrders();
+        } catch (FloorMasteryDAOException e) {
+// This is to create a file if it doesn't exist otherwise it would crash trying to load orders.
+        }
         OrderFile newOrder = ordersMap.put(OrderNumber, orderFile);
-        date = newOrder.getDate();
+        date = LocalDate.parse(orderFile.getDateinfo(), DateTimeFormatter.ofPattern("MMddyyyy"));
         writeOrders();
         return newOrder;
     }
 
     @Override
-    public OrderFile editOrder(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException  {
+    public OrderFile editOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -51,7 +55,6 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
     public List<OrderFile> getAllOrders(String date) throws FloorMasteryDAOException {
         loadOrders();
         return new ArrayList<OrderFile>(ordersMap.values());
-        
 
     }
 
@@ -120,22 +123,22 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         scanner.close();
 
     }
-    
-    private void writeOrders()throws FloorMasteryDAOException {
-       PrintWriter out;
-       try{
-           out = new PrintWriter(new FileWriter(ORDER_FILE));
-       } catch(IOException e){
-           throw new FloorMasteryDAOException(
-           "Could not save order data", e);
-       }
-       String orderFileAsText;
-       List<OrderFile> orderList = new ArrayList(ordersMap.values());
-       for (OrderFile currentOrder : orderList){
-           orderFileAsText = marshallOrderFile(currentOrder);
-           out.print(orderFileAsText);
-           out.flush();
-       }
-       out.close();
+
+    private void writeOrders() throws FloorMasteryDAOException {
+        PrintWriter out;
+        try {
+            out = new PrintWriter(new FileWriter(ORDER_FILE));
+        } catch (IOException e) {
+            throw new FloorMasteryDAOException(
+                    "Could not save order data", e);
+        }
+        String orderFileAsText;
+        List<OrderFile> orderList = new ArrayList(ordersMap.values());
+        for (OrderFile currentOrder : orderList) {
+            orderFileAsText = marshallOrderFile(currentOrder);
+            out.print(orderFileAsText);
+            out.flush();
+        }
+        out.close();
     }
 }

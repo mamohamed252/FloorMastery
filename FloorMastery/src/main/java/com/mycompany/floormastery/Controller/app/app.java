@@ -19,12 +19,11 @@ import com.mycompany.floormastery.DAO.FloorMasteryDAOFileImpl;
 public class app {
 
     public static void main(String[] args) {
-        UserIO myIo = new UserIOConsoleImpl();
-        FloorMasteryView myView = new FloorMasteryView(myIo);
-        FloorMasteryDAO myDao = new FloorMasteryDAOFileImpl();
-        FloorMasteryController controller
-                = new FloorMasteryController(myDao, myView);
-        controller.run();
+     UserIO myIo = new UserIOConsoleImpl();  
+     FloorMasteryDAO myDao = new FloorMasteryDAOFileImpl();
+     FloorMasteryView myView = new FloorMasteryView(myIo);
+     FloorMasteryController controller = new FloorMasteryController(myDao, myView);
+     controller.run();
     }
 
 }

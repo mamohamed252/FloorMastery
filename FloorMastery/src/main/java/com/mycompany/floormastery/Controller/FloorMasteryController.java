@@ -25,12 +25,12 @@ public class FloorMasteryController {
         this.view = view;
     }
 
-    private FloorMasteryServiceLayer service;
+    //private FloorMasteryServiceLayer service;
     private FloorMasteryDAO dao;
     private FloorMasteryView view;
     private UserIO io = new UserIOConsoleImpl();
 
-    public void run() throws FloorMasteryDAOException {
+    public void run(){
         boolean keepGoing = true;
         int menuSelection = 0;
         try {
@@ -78,6 +78,7 @@ public class FloorMasteryController {
     }
 
     private void addOrders() throws FloorMasteryDAOException {
+        view.firstLineMessage();
         OrderFile newOrderFile = view.getNewOrderInfo();
         dao.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
 
