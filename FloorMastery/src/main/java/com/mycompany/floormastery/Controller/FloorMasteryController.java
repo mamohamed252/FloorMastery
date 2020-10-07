@@ -85,6 +85,8 @@ public class FloorMasteryController {
     }
 
     private void editOrder() {
+        OrderFile editOrder = view.getNewOrderInfo();
+        //dao.editOrder(int OrderNumber, OrderFile);
 
     }
 

@@ -40,18 +40,16 @@ public class FloorMasteryView {
     }
 
     public OrderFile getNewOrderInfo() {
-        String dateInfo = io.readString("Please enter date: MMddyyyy format: ");
-       // String orderNumber = io.readString("Please enter order number");
         String name = io.readString("Please enter name");
         String state = io.readString("Please enter state abbreviation");
         String productType = io.readString("Please enter product type");
         BigDecimal area = io.readBigDecimal("Please enter area");
-        LocalDate enteredDate = LocalDate.parse(dateInfo, DateTimeFormatter.ofPattern("MMddyyyy"));
-        //add counter for order number or global counter that checks highest number in file
         
+        //add counter for order number or global counter that checks highest number in file
+    
         OrderFile currentOrder = new OrderFile(1);
         //currentOrder.setDate(enteredDate);
-        currentOrder.setDateinfo(dateInfo);
+        
         currentOrder.setCustomerName(name);
         currentOrder.setState(state);
         currentOrder.setProductType(productType);

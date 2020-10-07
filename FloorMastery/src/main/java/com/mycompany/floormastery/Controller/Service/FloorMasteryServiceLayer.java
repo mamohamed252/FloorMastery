@@ -5,10 +5,24 @@
  */
 package com.mycompany.floormastery.Controller.Service;
 
+import com.mycompany.floormastery.Controller.DTO.OrderFile;
+import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
+import java.math.BigDecimal;
+import java.util.List;
+
 /**
  *
  * @author Mohamed
  */
 public interface FloorMasteryServiceLayer {
     
+     OrderFile addOrder(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException ;
+    OrderFile editOrder(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException ;
+    List<OrderFile> getAllOrders(String date)throws FloorMasteryDAOException;
+    OrderFile removeOrder(String orderNumber, String date)throws FloorMasteryDAOException;
+     BigDecimal getTaxRate() throws FloorMasteryDAOException;
+//    OrderFile checkState
+//    checkProductType
+//    checkArea
+//    getAllFields
 }
