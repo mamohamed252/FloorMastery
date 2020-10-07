@@ -6,8 +6,6 @@
 package com.mycompany.floormastery.Controller.DTO;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-
 /**
  *
  * @author Mohamed
@@ -138,7 +136,4 @@ public class OrderFile {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
-
-  
-
 }

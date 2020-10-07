@@ -10,6 +10,9 @@ import com.mycompany.floormastery.DAO.FloorMasteryDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOAuditDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
 import static com.mycompany.floormastery.DAO.FloorMasteryDAOFileImpl.dateString;
+import com.mycompany.floormastery.DAO.FloorMasteryProductsDAO;
+import com.mycompany.floormastery.DAO.FloorMasteryTaxDAOException;
+import com.mycompany.floormastery.DAO.FloorMasteryTaxesDAO;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -22,17 +25,16 @@ import java.util.Map;
 public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     FloorMasteryDAO dao;
+    FloorMasteryTaxesDAO taxDao;
+    FloorMasteryProductsDAO prodDao;
     private FloorMasteryDAOAuditDAO auditDAO;
 
-    public FloorMasteryServiceLayerImpl(FloorMasteryDAO dao, FloorMasteryDAOAuditDAO auditDAO) {
+    public FloorMasteryServiceLayerImpl(FloorMasteryDAO dao, FloorMasteryTaxesDAO taxDao, FloorMasteryProductsDAO prodDao) {
         this.dao = dao;
-        this.auditDAO = auditDAO;
+        this.taxDao = taxDao;
+        this.prodDao = prodDao;
+
     }
-    private Map<String, BigDecimal> taxRateMap = new HashMap<>();
-    private Map<String, BigDecimal> ProductMap = new HashMap<>();
-    public static final String DELIMITER = ",";
-    public static String Taxes_FILE = ("Data/Taxes.txt");
-    public static String Products_FILE = ("Data/Products.txt");
 
     @Override
     public OrderFile addOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
@@ -52,10 +54,14 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
     @Override
     public OrderFile removeOrder(String orderNumber, String date) throws FloorMasteryDAOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
-    public BigDecimal getTaxRate() throws FloorMasteryDAOException {
+    public BigDecimal getTaxRate() throws FloorMasteryTaxDAOException {
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        taxDao.readTaxFile();
+//        return BigDecimal;
     }
 }

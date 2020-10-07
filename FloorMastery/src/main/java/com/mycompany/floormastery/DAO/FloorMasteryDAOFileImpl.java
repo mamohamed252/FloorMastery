@@ -74,6 +74,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         writeOrders();
         return removeOrder;
     }
+//read
 private String marshallOrderFile(OrderFile orderFile) {
        String orderFileAsText = orderFile.getOrderNumber() + DELIMITER;
         orderFileAsText += orderFile.getCustomerName() + DELIMITER;
@@ -91,7 +92,7 @@ private String marshallOrderFile(OrderFile orderFile) {
         return orderFileAsText;
    }
     
-   
+   //writes
    private OrderFile unmarshallOrderFile(String orderFileAsText){
        String[] orderTokens = orderFileAsText.split(DELIMITER);
        String orderNumber = orderTokens[0];
