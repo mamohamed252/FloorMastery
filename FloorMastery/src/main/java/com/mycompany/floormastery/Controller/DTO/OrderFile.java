@@ -6,6 +6,7 @@
 package com.mycompany.floormastery.Controller.DTO;
 
 import java.math.BigDecimal;
+
 /**
  *
  * @author Mohamed
@@ -19,12 +20,11 @@ public class OrderFile {
     private String productType;
     private BigDecimal area;
     private BigDecimal costPerSquareFoot;
-     private BigDecimal LaborCostPerSquareFoot;
+    private BigDecimal LaborCostPerSquareFoot;
     private BigDecimal materialCost;
     private BigDecimal laborCost;
     private BigDecimal tax;
     private BigDecimal total;
-    
 
     public OrderFile() {
     }

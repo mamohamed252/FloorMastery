@@ -12,6 +12,8 @@ import com.mycompany.floormastery.Controller.ui.UserIO;
 import com.mycompany.floormastery.Controller.ui.UserIOConsoleImpl;
 import com.mycompany.floormastery.DAO.FloorMasteryDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
+import com.mycompany.floormastery.DAO.FloorMasteryProductsDaoException;
+import com.mycompany.floormastery.DAO.FloorMasteryTaxDAOException;
 import java.util.List;
 
 /**
@@ -20,17 +22,23 @@ import java.util.List;
  */
 public class FloorMasteryController {
 
+    public FloorMasteryController(FloorMasteryServiceLayer service, FloorMasteryView view) {
+        this.service = service;
+        this.view = view;
+        
+    }
+
     public FloorMasteryController(FloorMasteryDAO dao, FloorMasteryView view) {
         this.dao = dao;
         this.view = view;
     }
 
-    //private FloorMasteryServiceLayer service;
+    private FloorMasteryServiceLayer service;
     private FloorMasteryDAO dao;
     private FloorMasteryView view;
     private UserIO io = new UserIOConsoleImpl();
 
-    public void run(){
+    public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
         try {
@@ -60,7 +68,7 @@ public class FloorMasteryController {
                 }
             }
 
-        } catch (FloorMasteryDAOException e) {
+        } catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException e) {
             System.out.println(e.getMessage());
         }
 //
@@ -78,9 +86,9 @@ public class FloorMasteryController {
 
     }
 
-    private void addOrders() throws FloorMasteryDAOException {
+    private void addOrders() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
         OrderFile newOrderFile = view.getNewOrderInfo();
-        dao.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
+        service.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
 
     }
 

@@ -6,6 +6,8 @@
 package com.mycompany.floormastery.Controller.app;
 
 import com.mycompany.floormastery.Controller.FloorMasteryController;
+import com.mycompany.floormastery.Controller.Service.FloorMasteryServiceLayer;
+import com.mycompany.floormastery.Controller.Service.FloorMasteryServiceLayerImpl;
 import com.mycompany.floormastery.Controller.ui.FloorMasteryView;
 import com.mycompany.floormastery.Controller.ui.UserIO;
 import com.mycompany.floormastery.Controller.ui.UserIOConsoleImpl;
@@ -22,7 +24,8 @@ public class app {
      UserIO myIo = new UserIOConsoleImpl();  
      FloorMasteryDAO myDao = new FloorMasteryDAOFileImpl();
      FloorMasteryView myView = new FloorMasteryView(myIo);
-     FloorMasteryController controller = new FloorMasteryController(myDao, myView);
+     FloorMasteryServiceLayer myService = new FloorMasteryServiceLayerImpl();
+     FloorMasteryController controller = new FloorMasteryController(myService, myView);
      controller.run();
     }
 
