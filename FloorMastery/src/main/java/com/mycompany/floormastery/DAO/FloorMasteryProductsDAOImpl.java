@@ -21,7 +21,7 @@ import java.util.Scanner;
  * @author Mohamed
  */
 public class FloorMasteryProductsDAOImpl implements FloorMasteryProductsDAO{
-    private Map<String, BigDecimal> ProductMap = new HashMap<>();
+    private Map<String, Products> ProductMap = new HashMap<>();
     public static final String DELIMITER = ",";
     public static String Products_FILE = ("Data/Products.txt");
 
@@ -30,7 +30,7 @@ public class FloorMasteryProductsDAOImpl implements FloorMasteryProductsDAO{
         loadProducts();
         return new ArrayList(ProductMap.values());
     }
-    private Products unMarshallTaxFile(String productsAsText) {
+    private Products unMarshallProductFile(String productsAsText) {
         String[] productTokens = productsAsText.split(DELIMITER);
         Products productsFromFile = new Products();
         productsFromFile.setProductType(productTokens[0]);
@@ -53,8 +53,8 @@ public class FloorMasteryProductsDAOImpl implements FloorMasteryProductsDAO{
         Products selectedFile;
         while (sc.hasNextLine()) {
             currentLine = sc.nextLine();
-            selectedFile = unMarshallTaxFile(currentLine);
-            ProductMap.put(selectedFile.getProductType(), selectedFile.getCostPerSquareFoot());
+            selectedFile = unMarshallProductFile(currentLine);
+            ProductMap.put(selectedFile.getProductType(), selectedFile);
         }
         sc.close();
     }

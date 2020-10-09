@@ -44,14 +44,14 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile addOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
-       OrderFile addedOrder = dao.addOrder(OrderNumber, orderFile);
+       
         OrderFile taxInfo = getTaxRate(OrderNumber, orderFile);
         OrderFile   prodInfo = getCost(OrderNumber, orderFile);
         
-        addedOrder.setTaxRate(taxInfo.getTaxRate());
-        addedOrder.setCostPerSquareFoot(prodInfo.getCostPerSquareFoot());
-        addedOrder.setLaborCostPerSquareFoot(prodInfo.getLaborCostPerSquareFoot());
-        
+        orderFile.setTaxRate(taxInfo.getTaxRate());
+        orderFile.setCostPerSquareFoot(prodInfo.getCostPerSquareFoot());
+        orderFile.setLaborCostPerSquareFoot(prodInfo.getLaborCostPerSquareFoot());
+        OrderFile addedOrder = dao.addOrder(OrderNumber, orderFile);
         return addedOrder;
     }
 
@@ -73,19 +73,20 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile getTaxRate(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException {
-
-        readTaxFile();
-        OrderFile addOrder = dao.addOrder(OrderNumber, orderFile);
-        if (readTaxFile().get(0).getState().equals(addOrder.getState())) {
-            addOrder.setTaxRate(readTaxFile().get(0).getTaxRate());
-        } else if (readTaxFile().get(1).getState().equals(addOrder.getState())) {
-            addOrder.setTaxRate(readTaxFile().get(1).getTaxRate());
-        } else if (readTaxFile().get(2).getState().equals(addOrder.getState())) {
-            addOrder.setTaxRate(readTaxFile().get(2).getTaxRate());
-        } else if (readTaxFile().get(3).getState().equals(addOrder.getState())) {
-            addOrder.setTaxRate(readTaxFile().get(3).getTaxRate());
+        String stateOne = readTaxFile().get(0).getState();
+        String stateTwo = readTaxFile().get(1).getState();
+        String stateThree = readTaxFile().get(2).getState();
+        String stateFour = readTaxFile().get(3).getState();
+        if (stateOne.equals(orderFile.getState())) {
+            orderFile.setTaxRate(readTaxFile().get(0).getTaxRate());
+        } else if (stateTwo.equals(orderFile.getState())) {
+            orderFile.setTaxRate(readTaxFile().get(1).getTaxRate());
+        } else if (stateThree.equals(orderFile.getState())) {
+            orderFile.setTaxRate(readTaxFile().get(2).getTaxRate());
+        } else if (stateFour.equals(orderFile.getState())) {
+            orderFile.setTaxRate(readTaxFile().get(3).getTaxRate());
         }
-        return addOrder;
+        return orderFile;
     }
 
     @Override
@@ -102,21 +103,21 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile getCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryProductsDaoException {
-        readProductFile();
-        OrderFile addOrder = dao.addOrder(OrderNumber, orderFile);
-        if (readProductFile().get(0).getProductType().equals(addOrder.getProductType())) {
-            addOrder.setLaborCostPerSquareFoot(readProductFile().get(0).getLaborCostPerSquareFoot());
-            addOrder.setCostPerSquareFoot(readProductFile().get(0).getLaborCostPerSquareFoot());
-        } else if (readProductFile().get(1).getProductType().equals(addOrder.getProductType())) {
-            addOrder.setLaborCostPerSquareFoot(readProductFile().get(1).getLaborCostPerSquareFoot());
-            addOrder.setCostPerSquareFoot(readProductFile().get(1).getLaborCostPerSquareFoot());
-        } else if (readProductFile().get(2).getProductType().equals(addOrder.getProductType())) {
-            addOrder.setLaborCostPerSquareFoot(readProductFile().get(2).getLaborCostPerSquareFoot());
-            addOrder.setCostPerSquareFoot(readProductFile().get(2).getLaborCostPerSquareFoot());
-        } else if (readProductFile().get(3).getProductType().equals(addOrder.getProductType())) {
-            addOrder.setLaborCostPerSquareFoot(readProductFile().get(3).getLaborCostPerSquareFoot());
-            addOrder.setCostPerSquareFoot(readProductFile().get(3).getLaborCostPerSquareFoot());
+       List<Products> productOne = readProductFile();
+       
+        if (readProductFile().get(0).getProductType().equals(orderFile.getProductType())) {
+            orderFile.setLaborCostPerSquareFoot(readProductFile().get(0).getLaborCostPerSquareFoot());
+            orderFile.setCostPerSquareFoot(readProductFile().get(0).getLaborCostPerSquareFoot());
+        } else if (readProductFile().get(1).getProductType().equals(orderFile.getProductType())) {
+            orderFile.setLaborCostPerSquareFoot(readProductFile().get(1).getLaborCostPerSquareFoot());
+            orderFile.setCostPerSquareFoot(readProductFile().get(1).getLaborCostPerSquareFoot());
+        } else if (readProductFile().get(2).getProductType().equals(orderFile.getProductType())) {
+            orderFile.setLaborCostPerSquareFoot(readProductFile().get(2).getLaborCostPerSquareFoot());
+            orderFile.setCostPerSquareFoot(readProductFile().get(2).getLaborCostPerSquareFoot());
+        } else if (readProductFile().get(3).getProductType().equals(orderFile.getProductType())) {
+            orderFile.setLaborCostPerSquareFoot(readProductFile().get(3).getLaborCostPerSquareFoot());
+            orderFile.setCostPerSquareFoot(readProductFile().get(3).getLaborCostPerSquareFoot());
         }
-        return addOrder;
+        return orderFile;
     }
 }
