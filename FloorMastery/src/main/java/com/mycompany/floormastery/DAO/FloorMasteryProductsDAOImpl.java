@@ -51,6 +51,7 @@ public class FloorMasteryProductsDAOImpl implements FloorMasteryProductsDAO{
         }
         String currentLine;
         Products selectedFile;
+        sc.nextLine();
         while (sc.hasNextLine()) {
             currentLine = sc.nextLine();
             selectedFile = unMarshallProductFile(currentLine);

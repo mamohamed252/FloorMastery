@@ -55,6 +55,7 @@ public class FloorMasteryTaxesDAOImpl implements FloorMasteryTaxesDAO {
         }
         String currentLine;
         Taxes taxObject;
+        sc.nextLine();
         while (sc.hasNextLine()) {
             currentLine = sc.nextLine();
             taxObject = unMarshallTaxFile(currentLine);
