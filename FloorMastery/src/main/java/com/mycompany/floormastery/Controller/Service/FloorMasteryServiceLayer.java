@@ -33,8 +33,8 @@ public interface FloorMasteryServiceLayer {
 
     public List<Taxes> readTaxFile() throws FloorMasteryTaxDAOException;
     public List<Products> readProductFile() throws FloorMasteryProductsDaoException;
-//    OrderFile checkState
-//    checkProductType
-//    checkArea
-//    getAllFields
+    OrderFile getMaterialCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
+     OrderFile getLaborCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
+      OrderFile getTaxCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
+       OrderFile getTotalCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
 }
