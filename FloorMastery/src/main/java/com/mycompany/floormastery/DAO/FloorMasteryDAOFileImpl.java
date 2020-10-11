@@ -30,10 +30,10 @@ import java.util.Set;
  */
 public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
-    private static LocalDate date = LocalDate.now();
-    public static String dateString = DateTimeFormatter.ofPattern("MMddyyyy").format(date);
+    private static LocalDate dateNow = LocalDate.now();
+    public static String dateNowString = DateTimeFormatter.ofPattern("MMddyyyy").format(dateNow);
     public static final String DELIMITER = ",";
-    public static String ORDER_FILE = ("Orders/Orders_" + dateString + ".txt");
+    public static String ORDER_FILE;
 
     private Map<Integer, OrderFile> ordersMap = new HashMap<>();
 
@@ -42,7 +42,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         Set<Integer> keyset = ordersMap.keySet();
         int maxOrderNumber;
         try {
-            loadOrders();
+            loadOrders(dateNowString);
             maxOrderNumber = Collections.max(keyset) + 1;
         } catch (FloorMasteryDAOException | NoSuchElementException e) {
 // This is to create a file if it doesn't exist otherwise it would crash trying to load orders.
@@ -51,30 +51,36 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
         orderFile.setOrderNumber(maxOrderNumber);
         OrderFile newOrder = ordersMap.put(maxOrderNumber, orderFile);
-        writeOrders();
+        writeOrders(dateNowString);
         return newOrder;
     }
 
     @Override
-    public OrderFile editOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
-        loadOrders();
-        OrderFile editOrder = ordersMap.put(OrderNumber, orderFile);
-        writeOrders();
+    public OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException {
+       loadOrders(userDate);
+        if (ordersMap.containsKey(orderNumber)) {
+        OrderFile editOrder = ordersMap.put(orderNumber, orderFile);
+        writeOrders(userDate);
+
         return editOrder;
+        } else {
+            throw new FloorMasteryDAOException("order does not exist");
+        }
     }
 
     @Override
-    public List<OrderFile> getAllOrders(String date) throws FloorMasteryDAOException {
-        loadOrders();
+    public List<OrderFile> getAllOrders(String userDate) throws FloorMasteryDAOException {
+        loadOrders(userDate);
+        //need to compare all orders to certain date and return orders of that date      
         return new ArrayList<OrderFile>(ordersMap.values());
 
     }
 
     @Override
-    public OrderFile removeOrder(String orderNumber, String date) throws FloorMasteryDAOException {
-        loadOrders();
+    public OrderFile removeOrder(int orderNumber, String userDate) throws FloorMasteryDAOException {
+        loadOrders(userDate);
         OrderFile removeOrder = ordersMap.remove(orderNumber);
-        writeOrders();
+        writeOrders(userDate);
         return removeOrder;
     }
 //read
@@ -116,7 +122,9 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         return orderFromFile;
     }
 
-    private void loadOrders() throws FloorMasteryDAOException {
+    private void loadOrders(String date) throws FloorMasteryDAOException {
+        //date takes in any date
+        ORDER_FILE = ("Orders/Orders_" + date + ".txt");
         Scanner sc;
         try {
             sc = new Scanner(
@@ -135,7 +143,9 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         sc.close();
     }
 
-    private void writeOrders() throws FloorMasteryDAOException {
+    private void writeOrders(String date) throws FloorMasteryDAOException {
+        //date takes in any date
+        ORDER_FILE = ("Orders/Orders_" + date + ".txt");
         PrintWriter out;
         try {
             out = new PrintWriter(new FileWriter(ORDER_FILE));

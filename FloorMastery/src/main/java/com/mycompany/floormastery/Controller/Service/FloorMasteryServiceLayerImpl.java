@@ -11,7 +11,6 @@ import com.mycompany.floormastery.Controller.DTO.Taxes;
 import com.mycompany.floormastery.DAO.FloorMasteryDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOAuditDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
-import static com.mycompany.floormastery.DAO.FloorMasteryDAOFileImpl.dateString;
 import com.mycompany.floormastery.DAO.FloorMasteryProductsDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryProductsDaoException;
 import com.mycompany.floormastery.DAO.FloorMasteryTaxDAOException;
@@ -45,23 +44,29 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
     }
 
     @Override
-    public OrderFile addOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
+    public OrderFile addOrder(int orderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
 
-        OrderFile taxInfo = getTaxRate(OrderNumber, orderFile);
-        OrderFile prodInfo = getCost(OrderNumber, orderFile);
-        OrderFile materialCostInfo = getMaterialCost(OrderNumber, orderFile);
-        OrderFile laborCostInfo = getLaborCost(OrderNumber, orderFile);
-        OrderFile taxCostInfo = getTaxCost( OrderNumber, orderFile);
-        OrderFile totalCostInfo = getTotalCost(OrderNumber, orderFile);
-        
+        OrderFile taxInfo = getTaxRate(orderNumber, orderFile);
+        OrderFile prodInfo = getCost(orderNumber, orderFile);
+        OrderFile materialCostInfo = getMaterialCost(orderNumber, orderFile);
+        OrderFile laborCostInfo = getLaborCost(orderNumber, orderFile);
+        OrderFile taxCostInfo = getTaxCost(orderNumber, orderFile);
+        OrderFile totalCostInfo = getTotalCost(orderNumber, orderFile);
 
-        OrderFile addedOrder = dao.addOrder(OrderNumber, orderFile);
+        OrderFile addedOrder = dao.addOrder(orderNumber, orderFile);
         return addedOrder;
     }
 
     @Override
-    public OrderFile editOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
+        OrderFile taxInfo = getTaxRate(orderNumber, orderFile);
+        OrderFile prodInfo = getCost(orderNumber, orderFile);
+        OrderFile materialCostInfo = getMaterialCost(orderNumber, orderFile);
+        OrderFile laborCostInfo = getLaborCost(orderNumber, orderFile);
+        OrderFile taxCostInfo = getTaxCost(orderNumber, orderFile);
+        OrderFile totalCostInfo = getTotalCost(orderNumber, orderFile);
+        OrderFile editedOrder = dao.editOrder(orderNumber, orderFile, userDate);
+        return editedOrder;
     }
 
     @Override
@@ -70,9 +75,9 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
     }
 
     @Override
-    public OrderFile removeOrder(String orderNumber, String date) throws FloorMasteryDAOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
+    public OrderFile removeOrder(int orderNumber, String date) throws FloorMasteryDAOException {
+        OrderFile removeMyChoice = dao.removeOrder(orderNumber, date);
+        return removeMyChoice;
     }
 
     @Override
@@ -142,7 +147,7 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         BigDecimal laborCostPersquareFoot = orderFile.getLaborCostPerSquareFoot();
         BigDecimal laborCost = area.multiply(laborCostPersquareFoot).setScale(2, RoundingMode.CEILING);
         orderFile.setLaborCost(laborCost);
-    return orderFile;
+        return orderFile;
     }
 
     @Override
@@ -160,15 +165,15 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile getTotalCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
-       // (MaterialCost + LaborCost + Tax)
-       BigDecimal oneHundred = new BigDecimal("100");
+        // (MaterialCost + LaborCost + Tax)
+        BigDecimal oneHundred = new BigDecimal("100");
         BigDecimal materialCost = orderFile.getMaterialCost();
         BigDecimal laborCost = orderFile.getLaborCost();
         BigDecimal taxRate = orderFile.getTaxRate();
         BigDecimal tax = (materialCost.add(laborCost).multiply(taxRate.divide(oneHundred)));
         BigDecimal total = (materialCost.add(laborCost).add(tax)).setScale(2, RoundingMode.CEILING);
         orderFile.setTotal(total);
-        
+
         return orderFile;
     }
 }

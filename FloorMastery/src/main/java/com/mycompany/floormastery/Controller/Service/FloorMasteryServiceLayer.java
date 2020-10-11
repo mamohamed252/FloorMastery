@@ -22,19 +22,25 @@ public interface FloorMasteryServiceLayer {
 
     OrderFile addOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException;
 
-    OrderFile editOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
+    OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException; 
 
     List<OrderFile> getAllOrders(String date) throws FloorMasteryDAOException;
 
-    OrderFile removeOrder(String orderNumber, String date) throws FloorMasteryDAOException;
+    OrderFile removeOrder(int orderNumber, String date) throws FloorMasteryDAOException;
 
-    OrderFile getTaxRate(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException ;
-     OrderFile getCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryProductsDaoException ;
+    OrderFile getTaxRate(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException;
+
+    OrderFile getCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryProductsDaoException;
 
     public List<Taxes> readTaxFile() throws FloorMasteryTaxDAOException;
+
     public List<Products> readProductFile() throws FloorMasteryProductsDaoException;
-    OrderFile getMaterialCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
-     OrderFile getLaborCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
-      OrderFile getTaxCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
-       OrderFile getTotalCost(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException;
+
+    OrderFile getMaterialCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
+
+    OrderFile getLaborCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
+
+    OrderFile getTaxCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
+
+    OrderFile getTotalCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
 }

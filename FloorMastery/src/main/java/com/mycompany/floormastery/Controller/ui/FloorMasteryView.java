@@ -19,9 +19,6 @@ import java.util.List;
  */
 public class FloorMasteryView {
 
-   
-
-
     public FloorMasteryView(UserIO io) {
         this.io = io;
     }
@@ -44,12 +41,28 @@ public class FloorMasteryView {
         String state = io.readString("Please enter state abbreviation");
         String productType = io.readString("Please enter product type");
         BigDecimal area = io.readBigDecimal("Please enter area");
-        
+
         //add counter for order number or global counter that checks highest number in file
-    
         OrderFile currentOrder = new OrderFile(1);
         //currentOrder.setDate(enteredDate);
-        
+
+        currentOrder.setCustomerName(name);
+        currentOrder.setState(state);
+        currentOrder.setProductType(productType);
+        currentOrder.setArea(area);
+        return currentOrder;
+    }
+
+    public OrderFile getEditOrderInfo(int orderNumber) {
+        String name = io.readString("Please enter name");
+        String state = io.readString("Please enter state abbreviation");
+        String productType = io.readString("Please enter product type");
+        BigDecimal area = io.readBigDecimal("Please enter area");
+
+        //add counter for order number or global counter that checks highest number in file
+        OrderFile currentOrder = new OrderFile(orderNumber);
+        //currentOrder.setDate(enteredDate);
+
         currentOrder.setCustomerName(name);
         currentOrder.setState(state);
         currentOrder.setProductType(productType);
@@ -82,35 +95,47 @@ public class FloorMasteryView {
     public void displayRemoveOrderBanner() {
         io.print("=== Remove Order ===");
     }
-    public String getDisplayOrdersDate(){
-      return io.readString("Please enter date: MMddyyyy format: "); 
-       
+
+    public String getDisplayOrdersDate() {
+        return io.readString("Please enter date: MMddyyyy format: ");
+
     }
 
     public void displayOrdersList(List<OrderFile> orderList) {
-       for (OrderFile currentOrder : orderList){
-           String orderInfo = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", 
-                   currentOrder.getOrderNumber(),
-                   currentOrder.getCustomerName(),
-                   currentOrder.getState(),
-                   currentOrder.getTaxRate(),
-                   currentOrder.getProductType(),
-                   currentOrder.getArea(),
-                   currentOrder.getCostPerSquareFoot(),
-                   currentOrder.getLaborCostPerSquareFoot(),
-                   currentOrder.getMaterialCost(),
-                   currentOrder.getLaborCost(),
-                   currentOrder.getTax(),
-                   currentOrder.getTotal());
-           io.print(orderInfo);
-       }
-       io.readString("Please hit enter to continue.");
-       
+        for (OrderFile currentOrder : orderList) {
+            String orderInfo = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
+                    currentOrder.getOrderNumber(),
+                    currentOrder.getCustomerName(),
+                    currentOrder.getState(),
+                    currentOrder.getTaxRate(),
+                    currentOrder.getProductType(),
+                    currentOrder.getArea(),
+                    currentOrder.getCostPerSquareFoot(),
+                    currentOrder.getLaborCostPerSquareFoot(),
+                    currentOrder.getMaterialCost(),
+                    currentOrder.getLaborCost(),
+                    currentOrder.getTax(),
+                    currentOrder.getTotal());
+            io.print(orderInfo);
+        }
+        io.readString("Please hit enter to continue.");
+
     }
 
-    public void displayRemoveStudentBanner() {
-        io.print("=== Remove Student ===");
+    public String getDate() {
+        return io.readString("Please enter date of order.");
     }
-    
+
+    public int getOrderNumber() {
+        return io.readInt("Please enter order number.");
+    }
+
+    public void displayOrderEditBanner() {
+        io.print("=== Edit Order ===");
+    }
+
+    public void displayOrderCreateSuccessEditBanner() {
+        io.print("Order successfully edited. Please hit enter to continue");
+    }
 
 }

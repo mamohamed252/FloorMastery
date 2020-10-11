@@ -15,8 +15,9 @@ import java.util.List;
  */
 public interface FloorMasteryDAO {
     OrderFile addOrder(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException ;
-    OrderFile editOrder(int OrderNumber, OrderFile orderFile)throws FloorMasteryDAOException ;
+    OrderFile editOrder(int OrderNumber, OrderFile orderFile, String userDate)throws FloorMasteryDAOException ;
     List<OrderFile> getAllOrders(String date)throws FloorMasteryDAOException;
-    OrderFile removeOrder(String orderNumber, String date)throws FloorMasteryDAOException ;
+    OrderFile removeOrder(int orderNumber, String date)throws FloorMasteryDAOException;
+   
     
 }
