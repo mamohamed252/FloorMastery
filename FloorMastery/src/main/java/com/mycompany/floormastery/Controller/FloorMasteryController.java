@@ -70,6 +70,7 @@ public class FloorMasteryController {
 
         } catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException e) {
             System.out.println(e.getMessage());
+            run();
         }
 //
 //
@@ -107,6 +108,8 @@ public class FloorMasteryController {
         view.displayRemoveOrderBanner();
         String date = view.getDate();
         int getOrderNumber = view.getOrderNumber();
+        //String confirmYesOrNo = view.printOrderandConfirmRemove(orderFile);
+        
         OrderFile removedOrder = service.removeOrder(getOrderNumber, date);
         view.displayRemoveResult(removedOrder);
         

@@ -124,6 +124,8 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
     private void loadOrders(String date) throws FloorMasteryDAOException {
         //date takes in any date
+        //find out how to read every file in orders
+        
         ORDER_FILE = ("Orders/Orders_" + date + ".txt");
         Scanner sc;
         try {
@@ -145,6 +147,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
     private void writeOrders(String date) throws FloorMasteryDAOException {
         //date takes in any date
+        // write to export
         ORDER_FILE = ("Orders/Orders_" + date + ".txt");
         PrintWriter out;
         try {

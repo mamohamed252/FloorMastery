@@ -9,17 +9,17 @@ import com.mycompany.floormastery.Controller.DTO.OrderFile;
 import com.mycompany.floormastery.Controller.DTO.Products;
 import com.mycompany.floormastery.Controller.DTO.Taxes;
 import com.mycompany.floormastery.DAO.FloorMasteryDAO;
-import com.mycompany.floormastery.DAO.FloorMasteryDAOAuditDAO;
+
 import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
+import com.mycompany.floormastery.DAO.FloorMasteryExportDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryProductsDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryProductsDaoException;
 import com.mycompany.floormastery.DAO.FloorMasteryTaxDAOException;
 import com.mycompany.floormastery.DAO.FloorMasteryTaxesDAO;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  *
@@ -30,7 +30,7 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
     FloorMasteryDAO dao;
     FloorMasteryTaxesDAO taxDao;
     FloorMasteryProductsDAO prodDao;
-    private FloorMasteryDAOAuditDAO auditDAO;
+    private FloorMasteryExportDAO exportDAO;
 
     public FloorMasteryServiceLayerImpl() {
 

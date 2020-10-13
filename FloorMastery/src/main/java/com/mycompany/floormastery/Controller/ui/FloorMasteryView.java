@@ -7,6 +7,7 @@ package com.mycompany.floormastery.Controller.ui;
 
 import com.mycompany.floormastery.Controller.DTO.OrderFile;
 import com.mycompany.floormastery.DAO.FloorMasteryDAO;
+import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOFileImpl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -40,7 +41,7 @@ public class FloorMasteryView {
         String name = io.readString("Please enter name");
         String state = io.readString("Please enter state abbreviation");
         String productType = io.readString("Please enter product type");
-        BigDecimal area = io.readBigDecimal("Please enter area");
+        BigDecimal area = io.readBigDecimal("Please enter area in sqFT");
 
         //add counter for order number or global counter that checks highest number in file
         OrderFile currentOrder = new OrderFile(1);
@@ -53,22 +54,33 @@ public class FloorMasteryView {
         return currentOrder;
     }
 
-    public OrderFile getEditOrderInfo(int orderNumber) {
+    public OrderFile getEditOrderInfo(int orderNumber) throws FloorMasteryDAOException {
         String name = io.readString("Please enter name");
         String state = io.readString("Please enter state abbreviation");
         String productType = io.readString("Please enter product type");
-        BigDecimal area = io.readBigDecimal("Please enter area");
+        BigDecimal area = io.readBigDecimal("Please enter area in sqFt");
 
-        //add counter for order number or global counter that checks highest number in file
-        OrderFile currentOrder = new OrderFile(orderNumber);
-        //currentOrder.setDate(enteredDate);
+        System.out.println(name);
+        System.out.println(state);
+        System.out.println(productType);
+        System.out.println(area);
+        String confirmToEdit = io.readString("Would you like to confirm to edit? Y/N");
+        if (confirmToEdit.equals("Y".toLowerCase()) || confirmToEdit.equals("yes".toLowerCase())) {
+            OrderFile currentOrder = new OrderFile(orderNumber);
+            //currentOrder.setDate(enteredDate);
 
-        currentOrder.setCustomerName(name);
-        currentOrder.setState(state);
-        currentOrder.setProductType(productType);
-        currentOrder.setArea(area);
-        return currentOrder;
-    }
+            currentOrder.setCustomerName(name);
+            currentOrder.setState(state);
+            currentOrder.setProductType(productType);
+            currentOrder.setArea(area);
+            System.out.println("Thank you for editing order");
+            return currentOrder;   
+        }else{
+            throw new FloorMasteryDAOException("Thank you, edit has not been made");
+        }
+     
+}
+//add counter for order number or global counter that checks highest number in file
 
     public void displayExitBanner() {
         io.print("Good Bye!!!");
@@ -136,6 +148,11 @@ public class FloorMasteryView {
 
     public void displayOrderCreateSuccessEditBanner() {
         io.print("Order successfully edited. Please hit enter to continue");
+    }
+    public String printOrderandConfirmRemove(OrderFile orderFile){
+        System.out.println(orderFile);
+        String yesOrNo = io.readString("Would you like to confirm to remove order? Y/N");
+        return yesOrNo;
     }
 
 }
