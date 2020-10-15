@@ -181,4 +181,10 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         return orderFile;
     }
 
+    @Override
+    public OrderFile getUserOrder(int orderNumber, String useDdate) throws FloorMasteryDAOException {
+    OrderFile getUser = dao.getUserOrder(orderNumber, useDdate);
+    return getUser;
+    }
+
 }

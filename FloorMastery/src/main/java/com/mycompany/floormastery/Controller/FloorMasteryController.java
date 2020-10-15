@@ -14,6 +14,7 @@ import com.mycompany.floormastery.DAO.FloorMasteryDAO;
 import com.mycompany.floormastery.DAO.FloorMasteryDAOException;
 import com.mycompany.floormastery.DAO.FloorMasteryProductsDaoException;
 import com.mycompany.floormastery.DAO.FloorMasteryTaxDAOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -41,9 +42,9 @@ public class FloorMasteryController {
     public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
-      
-            while (keepGoing) {
-                 try {
+
+        while (keepGoing) {
+            try {
                 menuSelection = getMenuSelection();
                 switch (menuSelection) {
                     case 1:
@@ -67,8 +68,8 @@ public class FloorMasteryController {
                     default:
                         unknownCommand();
                 }
-            }catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException e) {
-            System.out.println(e.getMessage());
+            } catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException| NumberFormatException e) {
+                System.out.println(e.getMessage());
 
             }
         }
@@ -87,13 +88,31 @@ public class FloorMasteryController {
 
     }
 
-    private void addOrders() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
+    private void addOrders() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException, NumberFormatException {
         OrderFile newOrderFile = view.getNewOrderInfo();
-        service.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
+        //-1 is less than
+       
+      try{
+           if (newOrderFile.getCustomerName().equals("")) {
+            throw new FloorMasteryDAOException("Must enter a Character for name");
 
+        } else if (newOrderFile.getArea().compareTo(new BigDecimal("100")) == -1) {
+            throw new FloorMasteryDAOException("Area sqFT must be 100 sqFT or more");
+
+        } else {
+
+            service.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
+        }
+           
+       }catch(NumberFormatException e){
+           throw new NumberFormatException("Please enter digit for Area sqFT");
+       }
     }
 
     private void editOrder() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
+        //fix error message for order number
+        //fix error for incorrect state ab.
+        //fix error for product type
         view.displayOrderEditBanner();
         String date = view.getDate();
         int orderNumber = view.getOrderNumber();
@@ -107,10 +126,15 @@ public class FloorMasteryController {
         view.displayRemoveOrderBanner();
         String date = view.getDate();
         int getOrderNumber = view.getOrderNumber();
-        //String confirmYesOrNo = view.printOrderandConfirmRemove(orderFile);
 
-        OrderFile removedOrder = service.removeOrder(getOrderNumber, date);
-        view.displayRemoveResult(removedOrder);
+        OrderFile getUserOrder = service.getUserOrder(getOrderNumber, date);
+        String confirmYesOrNo = view.printOrderandConfirmRemove(getUserOrder);
+        if (confirmYesOrNo.equals("Yes".toLowerCase()) || confirmYesOrNo.equals("y".toLowerCase())) {
+            OrderFile removedOrder = service.removeOrder(getOrderNumber, date);
+            view.displayRemoveResult(removedOrder);
+        } else {
+            throw new FloorMasteryDAOException("Thank you, order has not been removed");
+        }
 
     }
 

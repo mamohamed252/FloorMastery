@@ -93,8 +93,9 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
     }
      @Override
-    public OrderFile getUserOrder(int orderNumber, String date) throws FloorMasteryDAOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public OrderFile getUserOrder(int orderNumber, String userDate) throws FloorMasteryDAOException {
+        loadOrders(userDate);
+        return ordersMap.get(orderNumber);
     }
 //write
 

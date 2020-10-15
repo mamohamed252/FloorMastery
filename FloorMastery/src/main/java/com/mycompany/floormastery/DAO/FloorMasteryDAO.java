@@ -25,6 +25,6 @@ public interface FloorMasteryDAO {
 
     void exportOrders() throws FloorMasteryDAOException;
     
-    OrderFile getUserOrder(int orderNumber, String date) throws FloorMasteryDAOException;
+    OrderFile getUserOrder(int orderNumber, String userDate) throws FloorMasteryDAOException;
 
 }
