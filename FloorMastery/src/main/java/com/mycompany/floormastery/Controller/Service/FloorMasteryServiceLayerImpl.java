@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-
 /**
  *
  * @author Mohamed
@@ -78,6 +77,11 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
     public OrderFile removeOrder(int orderNumber, String date) throws FloorMasteryDAOException {
         OrderFile removeMyChoice = dao.removeOrder(orderNumber, date);
         return removeMyChoice;
+    }
+
+    @Override
+    public void exportOrders() throws FloorMasteryDAOException {
+        dao.exportOrders();
     }
 
     @Override
@@ -176,4 +180,5 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
         return orderFile;
     }
+
 }

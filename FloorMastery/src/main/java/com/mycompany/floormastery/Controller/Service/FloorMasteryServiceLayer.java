@@ -22,7 +22,7 @@ public interface FloorMasteryServiceLayer {
 
     OrderFile addOrder(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException;
 
-    OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException; 
+    OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException;
 
     List<OrderFile> getAllOrders(String date) throws FloorMasteryDAOException;
 
@@ -43,4 +43,6 @@ public interface FloorMasteryServiceLayer {
     OrderFile getTaxCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
 
     OrderFile getTotalCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
+
+    public void exportOrders() throws FloorMasteryDAOException;
 }

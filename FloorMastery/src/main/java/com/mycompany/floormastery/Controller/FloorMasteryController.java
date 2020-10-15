@@ -25,7 +25,7 @@ public class FloorMasteryController {
     public FloorMasteryController(FloorMasteryServiceLayer service, FloorMasteryView view) {
         this.service = service;
         this.view = view;
-        
+
     }
 
     public FloorMasteryController(FloorMasteryDAO dao, FloorMasteryView view) {
@@ -41,8 +41,9 @@ public class FloorMasteryController {
     public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
-        try {
+      
             while (keepGoing) {
+                 try {
                 menuSelection = getMenuSelection();
                 switch (menuSelection) {
                     case 1:
@@ -58,7 +59,7 @@ public class FloorMasteryController {
                         removeOrder();
                         break;
                     case 5:
-                        //ExportAllData
+                        ExportAllData();
                         break;
                     case 6:
                         keepGoing = false;
@@ -66,11 +67,10 @@ public class FloorMasteryController {
                     default:
                         unknownCommand();
                 }
-            }
-
-        } catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException e) {
+            }catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException e) {
             System.out.println(e.getMessage());
-            run();
+
+            }
         }
 //
 //
@@ -93,30 +93,29 @@ public class FloorMasteryController {
 
     }
 
-    private void editOrder() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException{
+    private void editOrder() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
         view.displayOrderEditBanner();
         String date = view.getDate();
-        int orderNumber= view.getOrderNumber();
+        int orderNumber = view.getOrderNumber();
         OrderFile editOrder = view.getEditOrderInfo(orderNumber);
         service.editOrder(orderNumber, editOrder, date);
         view.displayOrderCreateSuccessEditBanner();
-        
 
     }
 
-    private void removeOrder()throws FloorMasteryDAOException {
+    private void removeOrder() throws FloorMasteryDAOException {
         view.displayRemoveOrderBanner();
         String date = view.getDate();
         int getOrderNumber = view.getOrderNumber();
         //String confirmYesOrNo = view.printOrderandConfirmRemove(orderFile);
-        
+
         OrderFile removedOrder = service.removeOrder(getOrderNumber, date);
         view.displayRemoveResult(removedOrder);
-        
 
     }
 
-    private void ExportAllData() {
+    private void ExportAllData() throws FloorMasteryDAOException {
+        service.exportOrders();
 
     }
 

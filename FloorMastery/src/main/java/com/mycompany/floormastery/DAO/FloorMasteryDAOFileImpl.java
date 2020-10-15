@@ -7,6 +7,7 @@ package com.mycompany.floormastery.DAO;
 
 import com.mycompany.floormastery.Controller.DTO.OrderFile;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -34,6 +35,8 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
     public static String dateNowString = DateTimeFormatter.ofPattern("MMddyyyy").format(dateNow);
     public static final String DELIMITER = ",";
     public static String ORDER_FILE;
+    public static String BACKUP_FILE;
+    public static String dateSubString;
 
     private Map<Integer, OrderFile> ordersMap = new HashMap<>();
 
@@ -57,12 +60,12 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
 
     @Override
     public OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException {
-       loadOrders(userDate);
+        loadOrders(userDate);
         if (ordersMap.containsKey(orderNumber)) {
-        OrderFile editOrder = ordersMap.put(orderNumber, orderFile);
-        writeOrders(userDate);
+            OrderFile editOrder = ordersMap.put(orderNumber, orderFile);
+            writeOrders(userDate);
 
-        return editOrder;
+            return editOrder;
         } else {
             throw new FloorMasteryDAOException("order does not exist");
         }
@@ -83,7 +86,17 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         writeOrders(userDate);
         return removeOrder;
     }
-//read
+
+    @Override
+    public void exportOrders() throws FloorMasteryDAOException {
+        exportLoadOrders();
+
+    }
+     @Override
+    public OrderFile getUserOrder(int orderNumber, String date) throws FloorMasteryDAOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+//write
 
     private String marshallOrderFile(OrderFile orderFile) {
         String orderFileAsText = orderFile.getOrderNumber() + DELIMITER;
@@ -102,7 +115,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
         return orderFileAsText;
     }
 
-    //writes
+    //reads
     private OrderFile unmarshallOrderFile(String orderFileAsText) {
         String[] orderTokens = orderFileAsText.split(DELIMITER);
         String orderNumber = orderTokens[0];
@@ -125,7 +138,7 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
     private void loadOrders(String date) throws FloorMasteryDAOException {
         //date takes in any date
         //find out how to read every file in orders
-        
+
         ORDER_FILE = ("Orders/Orders_" + date + ".txt");
         Scanner sc;
         try {
@@ -163,5 +176,55 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
             out.flush();
         }
         out.close();
+    }
+
+    private void exportLoadOrders() throws FloorMasteryDAOException {
+        File[] folder = new File("Orders").listFiles();
+        BACKUP_FILE = ("Backup/DataExport.txt");
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new FileWriter(BACKUP_FILE));
+        } catch (IOException e) {
+            throw new FloorMasteryDAOException("could not save orders data", e);
+        }
+        for (File file : folder) {
+            dateSubString = file.toString().substring(14, 22);
+
+            Scanner s;
+            try {
+                s = new Scanner(
+                        new BufferedReader(
+                                new FileReader(file)));
+            } catch (FileNotFoundException e) {
+                throw new FloorMasteryDAOException("could not load orders into memory", e);
+            }
+            String currentLine;
+            OrderFile orderFileObject;
+            while (s.hasNextLine()) {
+                currentLine = s.nextLine();
+                orderFileObject = unmarshallOrderFile(currentLine);
+                ordersMap.put(orderFileObject.getOrderNumber(), orderFileObject);
+            }
+            exportWriteOrder(dateSubString, out);
+            ordersMap.clear();
+            s.close();
+
+        }
+        // closes exportWriterOrder after its completed print out all export Orders. 
+        out.close();
+    }
+
+    private void exportWriteOrder(String date, PrintWriter out) throws FloorMasteryDAOException {
+        String ExportFileAsText;
+        List<OrderFile> ExportList = new ArrayList(ordersMap.values());
+        
+        for (OrderFile file : ExportList) {
+            ExportFileAsText = marshallOrderFile(file);
+            LocalDate dates = LocalDate.parse(date, DateTimeFormatter.ofPattern("MMddyyyy"));
+            String dateStrings = dates.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+            
+            out.println(ExportFileAsText + "," + dateStrings);
+            out.flush();
+        }
     }
 }
