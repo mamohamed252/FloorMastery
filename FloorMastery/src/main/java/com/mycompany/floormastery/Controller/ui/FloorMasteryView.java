@@ -37,27 +37,38 @@ public class FloorMasteryView {
         return io.readInt("Please select from the above choices", 1, 6);
     }
 
-    public OrderFile getNewOrderInfo() {
-        String name = io.readString("Please enter name");
-        String state = io.readString("Please enter state abbreviation");
-        String productType = io.readString("Please enter product type");
-        BigDecimal area = io.readBigDecimal("Please enter area in sqFT");
+    public OrderFile getNewOrderInfo() throws FloorMasteryDAOException {
+        OrderFile currentOrder;
+        try {
+            String name = io.readString("Please enter name");
+            String state = io.readString("Please enter state abbreviation");
+            String productType = io.readString("Please enter product type starting with capital letter");
+            BigDecimal area = io.readBigDecimal("Please enter area in sqFT");
+            //add counter for order number or global counter that checks highest number in file
+            currentOrder = new OrderFile(1);
+            //currentOrder.setDate(enteredDate);
+            currentOrder.setCustomerName(name);
+            currentOrder.setState(state.toUpperCase());
+            currentOrder.setProductType(productType.substring(0,1).toUpperCase() + productType.substring(1).toLowerCase());
+            currentOrder.setArea(area);
 
-        //add counter for order number or global counter that checks highest number in file
-        OrderFile currentOrder = new OrderFile(1);
-        //currentOrder.setDate(enteredDate);
+            if (currentOrder.getCustomerName().equals("")) {
+                throw new FloorMasteryDAOException("Must enter a Character for name");
+            } else if (currentOrder.getArea().compareTo(new BigDecimal("100")) == -1) {
+                throw new FloorMasteryDAOException("Area sqFT must be 100 sqFT or more");
+            } else {
 
-        currentOrder.setCustomerName(name);
-        currentOrder.setState(state);
-        currentOrder.setProductType(productType);
-        currentOrder.setArea(area);
+            }
+        } catch (NumberFormatException e) {
+            throw new FloorMasteryDAOException("Please enter digit for Area sqFT");
+        }
         return currentOrder;
     }
 
     public OrderFile getEditOrderInfo(int orderNumber) throws FloorMasteryDAOException {
         String name = io.readString("Please enter name");
         String state = io.readString("Please enter state abbreviation");
-        String productType = io.readString("Please enter product type");
+        String productType = io.readString("Please enter product type starting with capital letter");
         BigDecimal area = io.readBigDecimal("Please enter area in sqFt");
 
         System.out.println(name);
@@ -70,16 +81,16 @@ public class FloorMasteryView {
             //currentOrder.setDate(enteredDate);
 
             currentOrder.setCustomerName(name);
-            currentOrder.setState(state);
-            currentOrder.setProductType(productType);
+            currentOrder.setState(state.toUpperCase());
+            currentOrder.setProductType(productType.substring(0,1).toUpperCase() + productType.substring(1).toLowerCase());
             currentOrder.setArea(area);
             System.out.println("Thank you for editing order");
-            return currentOrder;   
-        }else{
+            return currentOrder;
+        } else {
             throw new FloorMasteryDAOException("Thank you, edit has not been made");
         }
-     
-}
+
+    }
 //add counter for order number or global counter that checks highest number in file
 
     public void displayExitBanner() {
@@ -149,7 +160,8 @@ public class FloorMasteryView {
     public void displayOrderCreateSuccessEditBanner() {
         io.print("Order successfully edited. Please hit enter to continue");
     }
-    public String printOrderandConfirmRemove(OrderFile orderFile){
+
+    public String printOrderandConfirmRemove(OrderFile orderFile) {
         System.out.println(orderFile);
         String yesOrNo = io.readString("Would you like to confirm to remove order? Y/N");
         return yesOrNo;

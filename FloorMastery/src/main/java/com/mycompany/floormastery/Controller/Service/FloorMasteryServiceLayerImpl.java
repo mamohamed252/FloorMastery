@@ -18,6 +18,8 @@ import com.mycompany.floormastery.DAO.FloorMasteryTaxDAOException;
 import com.mycompany.floormastery.DAO.FloorMasteryTaxesDAO;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -58,14 +60,29 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
+        
         OrderFile taxInfo = getTaxRate(orderNumber, orderFile);
         OrderFile prodInfo = getCost(orderNumber, orderFile);
         OrderFile materialCostInfo = getMaterialCost(orderNumber, orderFile);
         OrderFile laborCostInfo = getLaborCost(orderNumber, orderFile);
         OrderFile taxCostInfo = getTaxCost(orderNumber, orderFile);
         OrderFile totalCostInfo = getTotalCost(orderNumber, orderFile);
-        OrderFile editedOrder = dao.editOrder(orderNumber, orderFile, userDate);
-        return editedOrder;
+        List<Taxes> taxes = readTaxFile();
+        List<String> states = new ArrayList<>();
+        Collections.addAll(states, "TX", "WA", "KY", "CA");
+        int taxSize = taxes.size();
+        int stateSize = states.size();
+        boolean stateChecker;
+       
+        
+        if ( taxSize == stateSize) {
+            OrderFile editedOrder = dao.editOrder(orderNumber, orderFile, userDate);
+                return editedOrder;
+        }else{
+            throw new FloorMasteryDAOException ("Please enter valid state: STATES: TX, WA, KY, CA");
+        }
+          
+
     }
 
     @Override
@@ -183,8 +200,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile getUserOrder(int orderNumber, String useDdate) throws FloorMasteryDAOException {
-    OrderFile getUser = dao.getUserOrder(orderNumber, useDdate);
-    return getUser;
+        OrderFile getUser = dao.getUserOrder(orderNumber, useDdate);
+        return getUser;
     }
 
 }

@@ -6,6 +6,7 @@
 package com.mycompany.floormastery.Controller;
 
 import com.mycompany.floormastery.Controller.DTO.OrderFile;
+import com.mycompany.floormastery.Controller.DTO.Taxes;
 import com.mycompany.floormastery.Controller.Service.FloorMasteryServiceLayer;
 import com.mycompany.floormastery.Controller.ui.FloorMasteryView;
 import com.mycompany.floormastery.Controller.ui.UserIO;
@@ -68,7 +69,7 @@ public class FloorMasteryController {
                     default:
                         unknownCommand();
                 }
-            } catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException| NumberFormatException e) {
+            } catch (FloorMasteryDAOException | FloorMasteryTaxDAOException | FloorMasteryProductsDaoException e) {
                 System.out.println(e.getMessage());
 
             }
@@ -88,31 +89,32 @@ public class FloorMasteryController {
 
     }
 
-    private void addOrders() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException, NumberFormatException {
+    private void addOrders() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
+
         OrderFile newOrderFile = view.getNewOrderInfo();
-        //-1 is less than
-       
-      try{
-           if (newOrderFile.getCustomerName().equals("")) {
-            throw new FloorMasteryDAOException("Must enter a Character for name");
-
-        } else if (newOrderFile.getArea().compareTo(new BigDecimal("100")) == -1) {
-            throw new FloorMasteryDAOException("Area sqFT must be 100 sqFT or more");
-
-        } else {
-
-            service.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
-        }
-           
-       }catch(NumberFormatException e){
-           throw new NumberFormatException("Please enter digit for Area sqFT");
-       }
+        service.addOrder(newOrderFile.getOrderNumber(), newOrderFile);
     }
 
     private void editOrder() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
         //fix error message for order number
         //fix error for incorrect state ab.
         //fix error for product type
+//        try {
+//            view.displayOrderEditBanner();
+//            String date = view.getDate();
+//            int orderNumber = view.getOrderNumber();
+//            List<Taxes> taxes = service.readTaxFile();
+//            OrderFile editOrder = view.getEditOrderInfo(orderNumber);
+//            for (int i = 0; i < taxes.size(); i++) {
+//                Taxes indTax = taxes.get(i);
+//                if (editOrder.getState().equals(indTax.getState())) {
+//
+//                }
+//            }
+//
+//        } catch () {
+//            throw new FloorMasteryDAOException("Must enter valid Floor Mastery state: TX, WA, KY, CA ");
+//        }
         view.displayOrderEditBanner();
         String date = view.getDate();
         int orderNumber = view.getOrderNumber();
