@@ -49,7 +49,7 @@ public class FloorMasteryView {
             //currentOrder.setDate(enteredDate);
             currentOrder.setCustomerName(name);
             currentOrder.setState(state.toUpperCase());
-            currentOrder.setProductType(productType.substring(0,1).toUpperCase() + productType.substring(1).toLowerCase());
+            currentOrder.setProductType(productType.substring(0, 1).toUpperCase() + productType.substring(1).toLowerCase());
             currentOrder.setArea(area);
 
             if (currentOrder.getCustomerName().equals("")) {
@@ -66,29 +66,34 @@ public class FloorMasteryView {
     }
 
     public OrderFile getEditOrderInfo(int orderNumber) throws FloorMasteryDAOException {
-        String name = io.readString("Please enter name");
-        String state = io.readString("Please enter state abbreviation");
-        String productType = io.readString("Please enter product type starting with capital letter");
-        BigDecimal area = io.readBigDecimal("Please enter area in sqFt");
+        OrderFile currentOrder;
+        try {
 
-        System.out.println(name);
-        System.out.println(state);
-        System.out.println(productType);
-        System.out.println(area);
-        String confirmToEdit = io.readString("Would you like to confirm to edit? Y/N");
-        if (confirmToEdit.equals("Y".toLowerCase()) || confirmToEdit.equals("yes".toLowerCase())) {
-            OrderFile currentOrder = new OrderFile(orderNumber);
+            String name = io.readString("Please enter name");
+            String state = io.readString("Please enter state abbreviation");
+            String productType = io.readString("Please enter product type.");
+            BigDecimal area = io.readBigDecimal("Please enter area in sqFt");
+            currentOrder = new OrderFile(orderNumber);
             //currentOrder.setDate(enteredDate);
+            String confirmYesOrNO = printOrderandConfirmEdit();
+            if (name.equals("")) {
+                throw new FloorMasteryDAOException("Must enter a Character for name");
+            } else if (area.compareTo(new BigDecimal("100")) == -1) {
+                throw new FloorMasteryDAOException("Area sqFT must be 100 sqFT or more");
+            }else if (productType.equals("")) {
+                throw new FloorMasteryDAOException("Please enter product type: Type: Carpet, Laminate, Tile or Wood");
+            } else if (confirmYesOrNO.equals("Y".toLowerCase()) || confirmYesOrNO.equals("yes".toLowerCase())) {
+                currentOrder.setCustomerName(name);
+                currentOrder.setState(state.toUpperCase());
+                currentOrder.setProductType(productType.substring(0, 1).toUpperCase() + productType.substring(1).toLowerCase());
+                currentOrder.setArea(area);
+            }
 
-            currentOrder.setCustomerName(name);
-            currentOrder.setState(state.toUpperCase());
-            currentOrder.setProductType(productType.substring(0,1).toUpperCase() + productType.substring(1).toLowerCase());
-            currentOrder.setArea(area);
-            System.out.println("Thank you for editing order");
-            return currentOrder;
-        } else {
-            throw new FloorMasteryDAOException("Thank you, edit has not been made");
+        } catch (NumberFormatException e) {
+            throw new FloorMasteryDAOException("Please enter digit for Area sqFT");
         }
+
+        return currentOrder;
 
     }
 //add counter for order number or global counter that checks highest number in file
@@ -163,8 +168,15 @@ public class FloorMasteryView {
 
     public String printOrderandConfirmRemove(OrderFile orderFile) {
         System.out.println(orderFile);
-        String yesOrNo = io.readString("Would you like to confirm to remove order? Y/N");
+        String yesOrNo = io.readString("Would you like to confirm to remove order? Y/N".toLowerCase());
+
         return yesOrNo;
     }
 
+    public String printOrderandConfirmEdit() {
+
+        String yesOrNo = io.readString("Would you like to confirm to edit order? Y/N".toLowerCase());
+
+        return yesOrNo;
+    }
 }

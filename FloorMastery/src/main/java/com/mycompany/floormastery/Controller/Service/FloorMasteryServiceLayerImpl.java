@@ -60,29 +60,44 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
 
     @Override
     public OrderFile editOrder(int orderNumber, OrderFile orderFile, String userDate) throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
-        
+
         OrderFile taxInfo = getTaxRate(orderNumber, orderFile);
         OrderFile prodInfo = getCost(orderNumber, orderFile);
         OrderFile materialCostInfo = getMaterialCost(orderNumber, orderFile);
         OrderFile laborCostInfo = getLaborCost(orderNumber, orderFile);
         OrderFile taxCostInfo = getTaxCost(orderNumber, orderFile);
         OrderFile totalCostInfo = getTotalCost(orderNumber, orderFile);
-        List<Taxes> taxes = readTaxFile();
-        List<String> states = new ArrayList<>();
-        Collections.addAll(states, "TX", "WA", "KY", "CA");
-        int taxSize = taxes.size();
-        int stateSize = states.size();
-        boolean stateChecker;
-       
         
-        if ( taxSize == stateSize) {
-            OrderFile editedOrder = dao.editOrder(orderNumber, orderFile, userDate);
-                return editedOrder;
-        }else{
-            throw new FloorMasteryDAOException ("Please enter valid state: STATES: TX, WA, KY, CA");
-        }
-          
+        //  Collections.addAll(states, "TX", "WA", "KY", "CA");
+        
+        // used to call from controller
+        //stateList(taxes, states);
+        OrderFile editedOrder = dao.editOrder(orderNumber, orderFile, userDate);
+        return editedOrder;
+        //throw new FloorMasteryDAOException("Please enter valid state: STATES: TX, WA, KY, CA");
+    }
 
+    @Override
+    public List<String> stateList() throws FloorMasteryDAOException, FloorMasteryTaxDAOException {
+        List<Taxes> taxList = readTaxFile();
+        List<String> stateList = new ArrayList<>();
+        for (int i = 0; i < taxList.size(); i++) {
+            //One tax object per loop
+            Taxes indTax = taxList.get(i);
+            stateList.add(indTax.getState());
+        }
+        return stateList;
+    }
+    @Override
+    public List<String> prodList() throws FloorMasteryDAOException, FloorMasteryProductsDaoException {
+        List<Products> prodList = readProductFile();
+        List<String> userProdList = new ArrayList<>();
+        for (int i = 0; i < prodList.size(); i++) {
+            //One tax object per loop
+            Products indprod = prodList.get(i);
+            userProdList.add(indprod.getProductType());
+        }
+        return userProdList;
     }
 
     @Override

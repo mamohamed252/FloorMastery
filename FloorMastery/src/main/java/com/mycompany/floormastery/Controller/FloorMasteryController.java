@@ -96,32 +96,41 @@ public class FloorMasteryController {
     }
 
     private void editOrder() throws FloorMasteryDAOException, FloorMasteryTaxDAOException, FloorMasteryProductsDaoException {
-        //fix error message for order number
-        //fix error for incorrect state ab.
-        //fix error for product type
-//        try {
-//            view.displayOrderEditBanner();
-//            String date = view.getDate();
-//            int orderNumber = view.getOrderNumber();
-//            List<Taxes> taxes = service.readTaxFile();
-//            OrderFile editOrder = view.getEditOrderInfo(orderNumber);
-//            for (int i = 0; i < taxes.size(); i++) {
-//                Taxes indTax = taxes.get(i);
-//                if (editOrder.getState().equals(indTax.getState())) {
+        OrderFile editOrder;
+        String date;
+        OrderFile editOrderComplete;
+        try {
+            view.displayOrderEditBanner();
+            date = view.getDate();
+            int orderNumber = view.getOrderNumber();
+            List<String> tax = service.stateList();
+            List<String> prod = service.prodList();
+            editOrder = view.getEditOrderInfo(orderNumber);
+            System.out.println(editOrder.getState());
+          
+//             boolean tax_tof = tax.contains(editOrder.getState()); 
+//            
+//            boolean prod_tof = prod.contains(editOrder.getProductType()); 
 //
-//                }
+//            if (tax_tof == false) {
+//                throw new FloorMasteryProductsDaoException("Please enter valid state: STATES: TX, WA, KY, CA");
+//            } else if (prod_tof == false) {
+//                throw new FloorMasteryDAOException("Please enter product type: Type: Carpet, Laminate, Tile or Wood");
+//            } else {
+//                editOrderComplete = service.editOrder(orderNumber, editOrder, date);
 //            }
-//
-//        } catch () {
-//            throw new FloorMasteryDAOException("Must enter valid Floor Mastery state: TX, WA, KY, CA ");
-//        }
-        view.displayOrderEditBanner();
-        String date = view.getDate();
-        int orderNumber = view.getOrderNumber();
-        OrderFile editOrder = view.getEditOrderInfo(orderNumber);
-        service.editOrder(orderNumber, editOrder, date);
-        view.displayOrderCreateSuccessEditBanner();
 
+            if (!tax.contains(editOrder.getState())) {
+                throw new FloorMasteryProductsDaoException("Please enter valid state: STATES: TX, WA, KY, CA");
+            } else if (!prod.contains(editOrder.getProductType())) {
+                throw new FloorMasteryDAOException("Please enter product type: Type: Carpet, Laminate, Tile or Wood");
+            } else {
+                service.editOrder(orderNumber, editOrder, date);
+            }
+
+        } catch (FloorMasteryDAOException e) {
+            throw new FloorMasteryProductsDaoException("Thank you, order has not been edited");
+        }
     }
 
     private void removeOrder() throws FloorMasteryDAOException {

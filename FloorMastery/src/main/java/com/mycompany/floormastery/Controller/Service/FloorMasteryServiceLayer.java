@@ -47,4 +47,8 @@ public interface FloorMasteryServiceLayer {
     public void exportOrders() throws FloorMasteryDAOException;
 
     public OrderFile getUserOrder(int orderNumber, String userDate) throws FloorMasteryDAOException;
+
+    public List<String> stateList() throws FloorMasteryDAOException, FloorMasteryTaxDAOException;
+
+    public List<String> prodList() throws FloorMasteryDAOException, FloorMasteryProductsDaoException;
 }
