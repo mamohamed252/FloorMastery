@@ -38,6 +38,13 @@ public class FloorMasteryDAOFileImpl implements FloorMasteryDAO {
     public static String BACKUP_FILE;
     public static String dateSubString;
 
+    public FloorMasteryDAOFileImpl(){
+        
+    }
+    public FloorMasteryDAOFileImpl(String file){
+        ORDER_FILE = file;
+    }
+    
     private Map<Integer, OrderFile> ordersMap = new HashMap<>();
 
     @Override
