@@ -28,21 +28,9 @@ public interface FloorMasteryServiceLayer {
 
     OrderFile removeOrder(int orderNumber, String date) throws FloorMasteryDAOException;
 
-    OrderFile getTaxRate(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException;
-
-    OrderFile getCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryProductsDaoException;
-
     public List<Taxes> readTaxFile() throws FloorMasteryTaxDAOException;
 
     public List<Products> readProductFile() throws FloorMasteryProductsDaoException;
-
-    OrderFile getMaterialCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
-
-    OrderFile getLaborCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
-
-    OrderFile getTaxCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
-
-    OrderFile getTotalCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException;
 
     public void exportOrders() throws FloorMasteryDAOException;
 

@@ -116,8 +116,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         dao.exportOrders();
     }
 
-    @Override
-    public OrderFile getTaxRate(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException {
+    
+    private OrderFile getTaxRate(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryTaxDAOException {
         String stateOne = readTaxFile().get(0).getState();
         String stateTwo = readTaxFile().get(1).getState();
         String stateThree = readTaxFile().get(2).getState();
@@ -146,8 +146,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         return newProduct;
     }
 
-    @Override
-    public OrderFile getCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryProductsDaoException {
+    
+    private OrderFile getCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException, FloorMasteryProductsDaoException {
         List<Products> productOne = readProductFile();
 
         if (readProductFile().get(0).getProductType().equals(orderFile.getProductType())) {
@@ -166,8 +166,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         return orderFile;
     }
 
-    @Override
-    public OrderFile getMaterialCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
+    
+    private OrderFile getMaterialCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
         //MaterialCost = (Area * CostPerSquareFoot)
         BigDecimal area = orderFile.getArea();
         BigDecimal costPerSquareFoot = orderFile.getCostPerSquareFoot();
@@ -176,8 +176,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         return orderFile;
     }
 
-    @Override
-    public OrderFile getLaborCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
+    
+    private OrderFile getLaborCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
         //LaborCost = (Area * LaborCostPerSquareFoot)
         BigDecimal area = orderFile.getArea();
         BigDecimal laborCostPersquareFoot = orderFile.getLaborCostPerSquareFoot();
@@ -186,8 +186,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         return orderFile;
     }
 
-    @Override
-    public OrderFile getTaxCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
+    
+    private OrderFile getTaxCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
         //Tax = (MaterialCost + LaborCost) * (TaxRate/100)
         //Tax rates are stored as whole numbers
         BigDecimal oneHundred = new BigDecimal("100");
@@ -199,8 +199,8 @@ public class FloorMasteryServiceLayerImpl implements FloorMasteryServiceLayer {
         return orderFile;
     }
 
-    @Override
-    public OrderFile getTotalCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
+    
+    private OrderFile getTotalCost(int OrderNumber, OrderFile orderFile) throws FloorMasteryDAOException {
         // (MaterialCost + LaborCost + Tax)
         BigDecimal oneHundred = new BigDecimal("100");
         BigDecimal materialCost = orderFile.getMaterialCost();

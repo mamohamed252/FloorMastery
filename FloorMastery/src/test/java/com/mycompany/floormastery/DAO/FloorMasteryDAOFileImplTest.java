@@ -65,7 +65,7 @@ public class FloorMasteryDAOFileImplTest {
     public void testRemoveOrder() throws FloorMasteryDAOException {
         //arrange
         String date = "10102020";
-        OrderFile testOrder = new OrderFile(1, "Test", "CA", new BigDecimal("25.00"), "Tile", new BigDecimal("249.00"), new BigDecimal("3.50"), new BigDecimal("4.15"), new BigDecimal("871.50"), new BigDecimal("1033.35"), new BigDecimal("476.21"), new BigDecimal("2381.06"));
+        OrderFile testOrder = new OrderFile(2, "Test", "CA", new BigDecimal("25.00"), "Tile", new BigDecimal("249.00"), new BigDecimal("3.50"), new BigDecimal("4.15"), new BigDecimal("871.50"), new BigDecimal("1033.35"), new BigDecimal("476.21"), new BigDecimal("2381.06"));
         testDAO.addOrder(2, testOrder);
         OrderFile removeOrder = testDAO.removeOrder(2, date);
         //act
@@ -76,7 +76,7 @@ public class FloorMasteryDAOFileImplTest {
 
         //assert
         assertEquals(newOrder, removedOrder, "Expected to remove testOrder order");
-        assertEquals(checkOrderRemoved.size(),1, "Expected 1 orders left");
+        assertEquals(checkOrderRemoved.size(), 1, "Expected 1 orders left");
         //removed testOrder so it can not be in list.
         assertEquals(doesContain, false, "Expected 1 orders left");
     }
@@ -85,17 +85,19 @@ public class FloorMasteryDAOFileImplTest {
     public void testEditOrder() throws FloorMasteryDAOException {
         //arrange
         String date = "10102020";
-        OrderFile testEdit= new OrderFile(1, "Test", "CA", new BigDecimal("25.00"), "Tile", new BigDecimal("249.00"), new BigDecimal("3.50"), new BigDecimal("4.15"), new BigDecimal("871.50"), new BigDecimal("1033.35"), new BigDecimal("476.21"), new BigDecimal("2381.06"));
-        OrderFile editOrder = testDAO.editOrder(1, testEdit, date);
+        OrderFile testEdit = new OrderFile(2, "Test", "CA", new BigDecimal("25.00"), "Tile", new BigDecimal("249.00"), new BigDecimal("3.50"), new BigDecimal("4.15"), new BigDecimal("871.50"), new BigDecimal("1033.35"), new BigDecimal("476.21"), new BigDecimal("2381.06"));
+        OrderFile addEdit = new OrderFile(2, "Add", "CA", new BigDecimal("25.00"), "Tile", new BigDecimal("249.00"), new BigDecimal("3.50"), new BigDecimal("4.15"), new BigDecimal("871.50"), new BigDecimal("1033.35"), new BigDecimal("476.21"), new BigDecimal("2381.06"));
+
+        testDAO.addOrder(2, addEdit);
+        OrderFile editOrder = testDAO.editOrder(2, testEdit, date);
         //act
-        OrderFile editedOrder = testDAO.editOrder(1, editOrder, date);
-        OrderFile newOrder = testDAO.editOrder(1, editOrder, date);
+
         List<OrderFile> checkEdit = testDAO.getAllOrders(date);
-        Boolean doesContain = checkEdit.contains(editOrder);
+        Boolean doesContain = checkEdit.contains(testEdit);
         //assert
-         assertEquals(newOrder, editedOrder, "Expected to edit order number 1");
-         assertEquals(checkEdit.size(),1, "Expected file to contain ");
-         assertTrue(doesContain, "Expected order 1 to be test");
+        assertEquals(testEdit, testDAO.getUserOrder(2, date), "Expected to edit order number 2");
+        assertEquals(checkEdit.size(), 2, "Expected file to contain ");
+        assertTrue(doesContain, "Expected order 2 to be add");
     }
 
     @Test

@@ -171,7 +171,7 @@ public class FloorMasterDAOMock implements FloorMasteryDAO {
     private void writeOrders(String date) throws FloorMasteryDAOException {
         //date takes in any date
         // write to export
-        ORDER_FILE = ("Orders/Orders_" + date + ".txt");
+        ORDER_FILE = ("TestDAOFolder/Orders_" + date + ".txt");
         PrintWriter out;
         try {
             out = new PrintWriter(new FileWriter(ORDER_FILE));
